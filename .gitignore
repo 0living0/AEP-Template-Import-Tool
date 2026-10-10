@@ -1,0 +1,5 @@
+Settings_Backups/
+*.bak
+*.tmp
+.DS_Store
+Thumbs.db
