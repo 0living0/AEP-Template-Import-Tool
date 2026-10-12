@@ -1,5 +1,13 @@
 # AEP Template Import Tool
 
+## v6.7 · 视频教程 / Video guides / 動画ガイド
+
+说明页二维码按界面语言跳转到对应教程。
+
+- 中文：https://www.bilibili.com/video/BV1LApR6uEbd/
+- English: https://youtu.be/1q9COMG-JRE
+- 日本語：https://youtu.be/W-ctmZx7TA4
+
 [GitHub project](https://github.com/0living0/AEP-Template-Import-Tool) · [Releases](https://github.com/0living0/AEP-Template-Import-Tool/releases)
 
 源码仓库中的 JSX 位于根目录，配置辅助文件位于 `Tools/`。视频、模板素材和三语 PDF 随完整发布包提供，请从 Releases 下载 ZIP 并完整解压后使用 BAT。下文路径均相对于该发布包。
