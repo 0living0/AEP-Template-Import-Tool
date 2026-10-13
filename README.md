@@ -1,12 +1,11 @@
 # AEP Template Import Tool
 
-## v6.7 · 视频教程 / Video guides / 動画ガイド
-
-说明页二维码按界面语言跳转到对应教程。
+## 视频教程 / Video guides / 動画ガイド
 
 - 中文：https://www.bilibili.com/video/BV1LApR6uEbd/
 - English: https://youtu.be/1q9COMG-JRE
 - 日本語：https://youtu.be/W-ctmZx7TA4
+
 
 [GitHub project](https://github.com/0living0/AEP-Template-Import-Tool) · [Releases](https://github.com/0living0/AEP-Template-Import-Tool/releases)
 
@@ -43,17 +42,17 @@ Extract the complete release. Close all AE instances, then run `Apply_Template_A
 
 ## 独立配置工具 / Standalone configuration utility / 設定ツール
 
-`Apply_Template_Asset_Settings.bat` 由用户自行选择运行，用来把 AE 内保存的脚本设置改为与本包素材一致。共配置 42 项：素材根目录和模板路径、作品/集数/卡号/版本、磁盘和 AE 内目录映射、复制模式、识别后缀和命名规则。配置路径根据解压位置计算，原值先备份。视频和脚本不会自动调用它。
+`Apply_Template_Asset_Settings.bat` 由用户自行选择运行，用来把 AE 内保存的脚本设置改为与本包素材一致。共配置 41 项：素材根目录和模板路径、作品/集数/卡号/版本、磁盘和 AE 内目录映射、复制模式、识别后缀和命名规则。配置路径根据解压位置计算，原值先备份。视频和脚本不会自动调用它。
 
-Optional: run the BAT yourself to apply the bundled asset configuration. It backs up the original values, then writes 42 local settings. It is never run automatically by the videos or tool.
+Optional: run the BAT yourself to apply the bundled asset configuration. It backs up the original values, then writes 41 local settings. It is never run automatically by the videos or tool.
 
-BAT はユーザーが必要に応じて手動で実行する設定ツールです。元の値をバックアップして、本素材に対応する 42 項目を保存します。動画やスクリプトから自動実行されることはありません。
+BAT はユーザーが必要に応じて手動で実行する設定ツールです。元の値をバックアップして、本素材に対応する 41 項目を保存します。動画やスクリプトから自動実行されることはありません。
 
 ## Configuration
 
 The configuration utility directly edits `%APPDATA%/Adobe/After Effects/<version>/Adobe After Effects <version> Prefs.txt`, in the `["Settings_AEPTemplateImportToolSettingsV4"]` section used by `app.settings`. It never starts or closes AE. **Close all AE instances first**, run the BAT, then start AE and open the panel. An open AE instance can retain old settings and overwrite edits when it exits; the utility refuses to write while AE is running.
 
-All existing initialized AE version folders are configured. Missing version preferences are not created; start and close AE manually once if none exist. Only the 42 bundled keys are changed; other settings, encoding and line endings are preserved. Full preference-file backups and results are stored in `Settings_Backups/`. Keep these backups private. To restore, close AE and copy the matching `.bak` over the original preference file shown in the result log.
+All existing initialized AE version folders are configured. Missing version preferences are not created; start and close AE manually once if none exist. Only the 41 bundled keys are changed; other settings, encoding and line endings are preserved. Full preference-file backups and results are stored in `Settings_Backups/`. Keep these backups private. To restore, close AE and copy the matching `.bak` over the original preference file shown in the result log.
 
 Paths are resolved from the extracted package; rerun the BAT after moving it. To target one specific preference file, run the PowerShell helper with `-PreferencesFile "C:\...\Adobe After Effects 26.0 Prefs.txt"`. `-DryRun` validates without writing. No AE executable, scripting permission or Python is required to apply configuration. The template itself was saved with AE 2026 and requires a compatible AE version.
 
@@ -78,3 +77,9 @@ Software: **GPL-3.0-only**. Commercial use is permitted; redistributed modificat
 - 中文：TP 动画序列导入后固定解释为 24 fps。主面板内按 F5，从当前已保存的 AEP 名称刷新作品、集数、卡号和版本；无已保存工程或无法完整识别时保持原显示。快捷键生效范围与 Enter、Ctrl+S 相同。
 - English: Imported TP animation sequences are interpreted at 24 fps. Press F5 within the main panel to refresh Show, Episode, Cut and Version from the current saved AEP name. With no saved project or an unrecognizable name, nothing changes. F5 uses the same keyboard scope as Enter and Ctrl+S.
 - 日本語：TP の動画シーケンスは読み込み後に 24 fps で解釈します。メインパネル内で F5 を押すと、保存済みの現在の AEP 名から作品・話数・カット・バージョンを更新します。未保存または正しく識別できない場合は変更しません。Enter、Ctrl+S と同じ範囲で有効です。
+
+## 固定分隔符 / Fixed separator / 固定区切り文字
+
+- 中文：输出名称各块之间固定使用下划线 `_`，高级设置不再提供自定义分隔符。旧配置中的分隔符不再读取；命名顺序与各块格式仍可调整。
+- English: Output name blocks always use an underscore `_`. Advanced Settings no longer offers a custom separator; previously saved separators are ignored. Block order and patterns remain configurable.
+- 日本語：出力名の各ブロックはアンダースコア `_` で区切ります。区切り文字の設定は廃止し、以前保存した値は使用しません。ブロックの順序と書式は引き続き変更できます。

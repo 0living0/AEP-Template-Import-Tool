@@ -19,7 +19,7 @@
 
 (function AEPTemplateImportTool(thisObj) {
     var SCRIPT_NAME = "AEP Template Import Tool";
-    var SCRIPT_VERSION = "6.7";
+    var SCRIPT_VERSION = "6.8";
     // Language-specific tutorial links. Matrices include a four-module quiet zone.
     var PROJECT_LINKS = {
     "zh": {
@@ -219,8 +219,7 @@
         outputNameShowPattern: "outputNameShowPattern",
         outputNameEpisodePattern: "outputNameEpisodePattern",
         outputNameCardPattern: "outputNameCardPattern",
-        outputNameVersionPattern: "outputNameVersionPattern",
-        outputNameSeparator: "outputNameSeparator"
+        outputNameVersionPattern: "outputNameVersionPattern"
     };
 
 
@@ -268,7 +267,6 @@
         "集数": { en: "Episode", ja: "話数" },
         "卡号": { en: "Cut", ja: "カット" },
         "版本": { en: "Version", ja: "バージョン" },
-        "块间隔符": { en: "Separator", ja: "区切り文字" },
         "预览": { en: "Preview", ja: "プレビュー" },
         "点击两个按钮可互换位置。": { en: "Click two buttons to swap their positions.", ja: "2つのボタンをクリックすると位置が入れ替わります。" },
         "空白→保留原值\n文字→替换原值\n+→插入原值\n++→输入普通加号\n例：集数输入“AA+BB”→“AA集数BB”": { en: "Blank → keep the original value\nText → replace the original value\n+ → insert the original value\n++ → insert a literal plus sign\nExample: for Episode, 'AA+BB' → 'AAEpisodeBB'", ja: "空欄 → 元の値を保持\n文字 → 元の値を置換\n+ → 元の値を挿入\n++ → 通常のプラス記号を入力\n例：話数に「AA+BB」→「AA話数BB」" },
@@ -428,8 +426,7 @@
         outputNameShowPattern: "",
         outputNameEpisodePattern: "",
         outputNameCardPattern: "",
-        outputNameVersionPattern: "",
-        outputNameSeparator: "_"
+        outputNameVersionPattern: ""
     };
 
 
@@ -736,14 +733,13 @@
     function buildOutputName(rawParts, settings, omitVersion) {
         var owner = settings || config;
         var order = getOutputNameOrder(owner.outputNameOrder);
-        var separator = sanitizeFileName(owner.outputNameSeparator === undefined ? "_" : owner.outputNameSeparator);
         var values = [];
         for (var i = 0; i < order.length; i++) {
             var key = order[i];
             if (omitVersion && key === "version") continue;
             values.push(sanitizeFileName(applyOutputNamePattern(rawParts[key], getOutputNamePattern(key, owner))));
         }
-        return values.join(separator);
+        return values.join("_");
     }
 
     function buildShotName(showName, episodeName, cardName, takeOverride) {
@@ -2104,7 +2100,6 @@
         var namingButtons = [];
         var namingEdits = [];
         var namingTip = T("空白→保留原值\n文字→替换原值\n+→插入原值\n++→输入普通加号\n例：集数输入“AA+BB”→“AA集数BB”");
-        var outputNameSeparatorEdit = null;
         var outputNamePreview = null;
 
         function saveVisibleNamingPatterns() {
@@ -2116,8 +2111,7 @@
                 outputNameShowPattern: namingPatterns.show,
                 outputNameEpisodePattern: namingPatterns.episode,
                 outputNameCardPattern: namingPatterns.card,
-                outputNameVersionPattern: namingPatterns.version,
-                outputNameSeparator: outputNameSeparatorEdit ? outputNameSeparatorEdit.text : config.outputNameSeparator
+                outputNameVersionPattern: namingPatterns.version
             };
         }
         function refreshOutputNamePreview() {
@@ -2185,17 +2179,10 @@
                 namingButtons.push(nameButton);
                 namingEdits.push(nameEdit);
             }
-            var separatorRow = outputNamePanel.add("group");
-            separatorRow.orientation = "row";
-            separatorRow.alignChildren = ["left", "center"];
-            separatorRow.add("statictext", undefined, T("块间隔符"));
-            outputNameSeparatorEdit = separatorRow.add("edittext", undefined, config.outputNameSeparator === undefined ? "_" : config.outputNameSeparator);
-            outputNameSeparatorEdit.characters = 8;
             outputNamePreview = outputNamePanel.add("statictext", undefined, "", { truncate: "middle" });
             outputNamePreview.alignment = ["fill", "top"];
             outputNamePreview.helpTip = namingTip;
             for (var bindSlotIndex = 0; bindSlotIndex < 4; bindSlotIndex++) bindNamingSlot(bindSlotIndex);
-            outputNameSeparatorEdit.onChanging = refreshOutputNamePreview;
             refreshNamingSlots();
         }
         var renderLocationRow = basic.add("group");
@@ -2622,7 +2609,6 @@
                 pending.outputNameEpisodePattern = namingPatterns.episode;
                 pending.outputNameCardPattern = namingPatterns.card;
                 pending.outputNameVersionPattern = namingPatterns.version;
-                pending.outputNameSeparator = outputNameSeparatorEdit ? outputNameSeparatorEdit.text : config.outputNameSeparator;
                 if (advancedInitialized) {
                     pending.createIndependentProject = independentProjectCheck.value ? "true" : "false";
                     pending.cutTpFiles = cutTpCheck.value ? "true" : "false";
